@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CricShed - Live Cricket Scores</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <div class="brand">
+                <span class="material-icons">sports_cricket</span>
+                <h1>CricShed</h1>
+            </div>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="live">
+                    <span class="material-icons">live_tv</span>
+                    Live Matches
+                </button>
+                <button class="tab-btn" data-tab="recent">
+                    <span class="material-icons">history</span>
+                    Recent
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div id="loader" class="hidden">
+            <div class="spinner"></div>
+        </div>
+
+        <div id="error-message" class="hidden">
+            <div class="error-content">
+                <span class="material-icons">error_outline</span>
+                <p>Failed to load matches</p>
+                <button class="retry-btn">Retry</button>
+            </div>
+        </div>
+
+        <div id="matches-container"></div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
