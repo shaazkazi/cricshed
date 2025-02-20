@@ -41,13 +41,39 @@ class CrickShed {
                     'x-rapidapi-key': API_KEY
                 }
             });
-            const matches = await response.json();
 
-            container.innerHTML = matches.typeMatches
+            if (response.status === 429) {
+                container.innerHTML = `
+                    <div class="rate-limit-message">
+                        <span class="material-icons">timer</span>
+                        <h3>API Rate Limit Reached</h3>
+                        <p>Please wait a moment before refreshing</p>
+                        <div class="limit-info">Try again in a few seconds</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const data = await response.json();
+            
+            if (!data || !data.typeMatches) {
+                container.innerHTML = `
+                    <div class="no-matches">
+                        <span class="material-icons">sports_cricket</span>
+                        <h3>No ${this.currentTab} Matches Available</h3>
+                        <p>Check back later for live cricket action!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const matchCards = data.typeMatches
                 .map(type => type.seriesMatches
                     .map(series => series.seriesAdWrapper?.matches?.map(match => 
                         this.createMatchCard(match)) || []).flat()
                 ).flat().join('');
+
+            container.innerHTML = matchCards || this.createNoMatchesCard();
 
         } catch (error) {
             console.error('Error:', error);
@@ -56,7 +82,6 @@ class CrickShed {
             loader.classList.add('hidden');
         }
     }
-
     createMatchCard(match) {
         return `
             <a href="match.html?id=${match.matchInfo.matchId}" class="match-card">

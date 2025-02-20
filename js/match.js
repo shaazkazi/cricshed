@@ -41,45 +41,52 @@ class MatchDetails {
     createDetailedMatchView(matchData) {
         const match = matchData.matchInfo;
         const venue = matchData.venueInfo;
-
+    
         return `
             <div class="match-details-card">
                 <div class="match-header">
                     <h2 class="match-title">${match.matchDescription}</h2>
                     <div class="match-meta">
-                        <span class="match-type">${match.matchFormat} • ${match.matchType}</span>
+                        <span class="match-format">${match.matchFormat} • ${match.matchType}</span>
                         ${match.state === "inprogress" ? '<span class="live-badge">LIVE</span>' : ''}
                     </div>
                 </div>
-
+    
                 <div class="match-status">
-                    <p class="status-text">${match.status}</p>
-                    ${match.shortStatus ? `<p class="short-status">${match.shortStatus}</p>` : ''}
+                    <div class="status-text">${match.status}</div>
+                    <div class="short-status">${match.shortStatus}</div>
                 </div>
-
+    
                 <div class="teams-container">
                     <div class="team">
                         <h3>${match.team1.name}</h3>
+                        <div class="team-score">
+                            ${match.team1.score ? `${match.team1.score}/${match.team1.wickets} (${match.team1.overs})` : ''}
+                        </div>
                         ${match.tossResults?.tossWinnerId === match.team1.id ? 
-                            `<span class="toss-winner">(Won Toss - ${match.tossResults.decision})</span>` : ''}
+                            `<span class="toss-winner">Won Toss - ${match.tossResults.decision}</span>` : ''}
                     </div>
+                    <div class="versus">VS</div>
                     <div class="team">
                         <h3>${match.team2.name}</h3>
+                        <div class="team-score">
+                            ${match.team2.score ? `${match.team2.score}/${match.team2.wickets} (${match.team2.overs})` : ''}
+                        </div>
                         ${match.tossResults?.tossWinnerId === match.team2.id ? 
-                            `<span class="toss-winner">(Won Toss - ${match.tossResults.decision})</span>` : ''}
+                            `<span class="toss-winner">Won Toss - ${match.tossResults.decision}</span>` : ''}
                     </div>
                 </div>
-
+    
                 <div class="venue-details">
                     <h4>Venue Information</h4>
-                    <p>${venue.ground}, ${venue.city}, ${venue.country}</p>
+                    <p class="venue-name">${venue.ground}, ${venue.city}, ${venue.country}</p>
                     <div class="venue-meta">
-                        <span>Capacity: ${venue.capacity}</span>
-                        <span>Known as: ${venue.knownAs}</span>
-                        ${venue.floodlights ? '<span>Floodlights Available</span>' : ''}
+                        <span><i class="material-icons">people</i> Capacity: ${venue.capacity}</span>
+                        <span><i class="material-icons">info</i> Known as: ${venue.knownAs}</span>
+                        ${venue.floodlights ? '<span><i class="material-icons">lightbulb</i> Floodlights Available</span>' : ''}
                     </div>
                 </div>
-
+    
                 <div class="match-info-grid">
                     <div class="info-item">
                         <label>Match Type</label>
@@ -87,14 +94,16 @@ class MatchDetails {
                     </div>
                     <div class="info-item">
                         <label>Series</label>
-                        <span>${match.series?.name || 'N/A'}</span>
+                        <span>${match.series.name}</span>
                     </div>
-                    ${match.umpire1 ? `
-                        <div class="info-item">
-                            <label>Umpires</label>
-                            <span>${match.umpire1.name}, ${match.umpire2?.name || 'TBA'}</span>
-                        </div>
-                    ` : ''}
+                    <div class="info-item">
+                        <label>Umpires</label>
+                        <span>${match.umpire1.name}, ${match.umpire2.name}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Match Referee</label>
+                        <span>${match.referee.name}</span>
+                    </div>
                 </div>
             </div>
         `;
